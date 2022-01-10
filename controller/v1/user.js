@@ -47,6 +47,16 @@ module.exports = () => {
             }
         },
 
+        //get all Coordinators
+        getCoordinators: async (req,res) => {
+            try{
+                const users = await User.find() ;
+                res.status(200).json(users);
+            }catch(e){
+                res.status(500).json(e);
+            }
+        },
+
         //users stats
         usersStats : async (req,res) => {
             const date = new Date();

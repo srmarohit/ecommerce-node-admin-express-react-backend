@@ -15,22 +15,23 @@ module.exports = () => {
         },
 
         login : async (req,res) => {
-            try{
-                const user = await User.findOne({username : req.body.username});
-                !user && res.status(400).send({error : "Wrong username"});
+             try{
+                 //console.log(req.body.password)
+                 const user = await User.findOne({email : req.body.email});
+                 if(!user) return  res.status(400).json({error : "Wrong Email"});
+            
+                 const hashedPassword = CryptoJS.AES.decrypt(user.password, process.env.PASS_SEC_KEY).toString(CryptoJS.enc.Utf8);
 
-                const hashedPassword = CryptoJS.AES.decrypt(user.password, process.env.PASS_SEC_KEY).toString(CryptoJS.enc.Utf8);
+                 if(hashedPassword != req.body.password) return res.status(400).send({error : "Wrong password"});
 
-                hashedPassword != req.body.password && res.status(400).send({error : "Wrong password"});
+                 const access_token = createToken(user._id, user.isAdmin) ;
 
-                const access_token = createToken(user._id, user.isAdmin) ;
+                 const {password, ...rest} = user._doc ;
 
-                const {password, ...rest} = user._doc ;
-
-                res.status(200).json({...rest,access_token});
+                 res.status(200).json({...rest,access_token});
 
             }catch(e){
-                res.status(500).json(e);
+                res.status(500).json("Error in Login : "+e);
             }
         }
     }

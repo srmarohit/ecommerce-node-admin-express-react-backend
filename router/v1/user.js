@@ -14,5 +14,11 @@ router.get("/", admin, userController().getAllUsers)
 
 router.get("/stats", admin, userController().usersStats)
 
+// for chat purpose
+router.get("/coordinators", userController().getCoordinators)
+
+router.get("/:id", userController().getUser);
+
+
 
 module.exports = router ;
