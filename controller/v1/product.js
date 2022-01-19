@@ -13,6 +13,7 @@ module.exports = () => {
         },
 
         update : async  (req,res) => {
+           console.log(res.body)
             try {
                 const updatedProduct = await Product.findByIdAndUpdate(
                   req.params.id,
@@ -21,6 +22,7 @@ module.exports = () => {
                   },
                   { new: true }
                 );
+                console.log(updatedProduct)
                 res.status(200).json(updatedProduct);
               } catch (err) {
                 res.status(500).json(err);

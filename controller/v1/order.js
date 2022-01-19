@@ -56,6 +56,7 @@ module.exports = () => {
         },
 
         income : async (req,res) => {
+            const pid = req.query.pid ;
             const date = new Date(25-12-2021);
             // const lastMonth = new Date(date.setMonth(date.getMonth()-1));
             // const previousMonth = new Date(new Date().setMonth(lastMonth.getMonth() - 1));
@@ -69,7 +70,12 @@ module.exports = () => {
                         $match : {
                             createdAt : {
                                 $gte : previousMonth
-                            }
+                            },
+                            ...(
+                                pid && {
+                                    products : { $elemMatch : { productId : pid }}
+                                }
+                            )
                         }
                     },
                     {
