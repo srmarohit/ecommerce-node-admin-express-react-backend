@@ -11,14 +11,14 @@ const orderRoute = require("./router/v1/order");
 const conversation = require("./router/v1/conversations");
 const messages = require("./router/v1/messages");
 
-const io = require("socket.io")(5001, {
+const io = require("socket.io")(process.env.WEBSOCKETPORT, {
     cors: {
-      origin: "http://localhost:3000",
+      origin: "*",
     },
 });
 
 
-const videoIo = require("socket.io")(5002, {
+const videoIo = require("socket.io")(process.env.MEDIAPORT, {
 	cors: {
 		origin: "*",
 		methods: [ "GET", "POST" ]
